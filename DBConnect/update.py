@@ -10,12 +10,12 @@ db_config = {
 conn = psycopg2.connect(**db_config)
 cursor = conn.cursor()
 
-
+sql = "UPDATE users SET age=50 where age = 30"
 #select data
-cursor.execute("SELECT * FROM users where id > 2")
-myresult = cursor.fetchall()
-for x in myresult:
-    print(x)
+cursor.execute(sql)
+conn.commit()
+
+print(f"Rows updated: {cursor}")
 
 
 
