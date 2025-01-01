@@ -19,12 +19,13 @@
 formatDic = dict(name="alamin",age=23)
 for data in formatDic:
     print(formatDic[data])
-# x = formatDic.items()
+x = formatDic.items()
 # x = formatDic.keys()
 # x = formatDic.values()
-formatDic['class'] = 10
-print(formatDic)
-formatDic["age"] = 60
-print(formatDic)
-if "names" not in  formatDic:
-    print("No data")
+print(x)
+# formatDic['class'] = 10
+# print(formatDic)
+# formatDic["age"] = 60
+# print(formatDic)
+# if "names" not in  formatDic:
+#     print("No data")
