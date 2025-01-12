@@ -1,6 +1,6 @@
-# f = open("demo.txt",'a')
-# f.write("Added new page")
-# f.close()
+f = open("demo.txt",'a')
+f.write("Added new page in demo file")
+f.close()
 
 # f= open("demo.txt")
 # print(f.read())
