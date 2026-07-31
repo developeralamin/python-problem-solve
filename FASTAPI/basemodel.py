@@ -2,7 +2,7 @@ import time
 
 import psycopg2
 
-from fastapi import FastAPI,Request,HTTPException,status
+from fastapi import FastAPI,Request,HTTPException, Response,status
 from pydantic import BaseModel
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
@@ -68,28 +68,31 @@ def get_course(course_id: int):
 
 @app.put('/courses/{course_id}')
 def update_course(course_id: int, course: Course):
-    cursor.execute("UPDATE courses SET name = %s, time = %s WHERE id = %s", (course.name, course.time, course_id))
+    cursor.execute("UPDATE courses SET name = %s, time = %s WHERE id = %s returning *", (course.name, course.time, course_id))
+    update_course = cursor.fetchone()
     connection.commit()
-    if cursor.rowcount == 0:
+    if update_course == None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, 
-            detail="Course not found")
+            detail=f"Course with id: {course_id} not found")
     return {
-        "success": True,
-        "message": "Course updated successfully.",
-        "data": course
-    }
+            "success": True,
+            "message": "Course updated successfully.",
+            "data": update_course
+        }
 
 # // //delete data from db
 @app.delete('/courses/{course_id}')
 def delete_course(course_id: int):
-    cursor.execute("DELETE FROM courses where id = %s", (course_id,))
+    cursor.execute("DELETE FROM courses where id = %s returning *", (str(course_id),))
+    deleted_course = cursor.fetchone()
     connection.commit()
-    if cursor.rowcount == 0:
+
+    if deleted_course == None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, 
-            detail="Course not found")
-    return {"success": True, "message": "Course deleted successfully."}
+            detail=f"Course with id: {course_id} not found")
+    return Response(status_code=status.HTTP_204_NO_CONTENT)
 
 @app.get("/")
 def root():
