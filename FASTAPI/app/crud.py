@@ -2,13 +2,22 @@ import time
 
 import psycopg2
 
-from fastapi import FastAPI,Request,HTTPException, Response,status
+from fastapi import FastAPI,Request,HTTPException, Response,status,Depends
 from pydantic import BaseModel
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 from psycopg2.extras import RealDictCursor
+from . import models
+from sqlalchemy.orm import session
+from . database import engine, get_db
 
 app = FastAPI()
+
+# //create  tables from all metadata of models.py
+models.Base.metadata.create_all(bind=engine)
+
+
+
 class User(BaseModel):
     id: int
     name: str
@@ -130,3 +139,9 @@ async def validation_exception_handler(request: Request, exc: RequestValidationE
         }
     )
 
+
+
+# //create table
+@app.get('/sqlalchemy')
+def course(db:session  = Depends(get_db)):
+    return {"message": "sqlalchemy ORM Working"}
