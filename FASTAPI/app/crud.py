@@ -8,7 +8,7 @@ from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 from psycopg2.extras import RealDictCursor
 from . import models
-from sqlalchemy.orm import session
+from sqlalchemy.orm import Session, session
 from . database import engine, get_db
 
 app = FastAPI()
@@ -26,6 +26,11 @@ class User(BaseModel):
 class Course(BaseModel):
     name: str
     time: str
+
+class SQLCourse(BaseModel):
+    name:str
+    description:str
+    instructor:str
 
 
 while True:
@@ -141,7 +146,72 @@ async def validation_exception_handler(request: Request, exc: RequestValidationE
 
 
 
-# //create table
+# //create table in sqlalchemy orm
+# //create table in sqlalchemy orm
+# //create table in sqlalchemy orm
+
 @app.get('/sqlalchemy')
 def course(db:session  = Depends(get_db)):
     return {"message": "sqlalchemy ORM Working"}
+
+#insert data 
+@app.post('/sqlalchemy/courses')
+def create_course(course:SQLCourse, db:Session = Depends(get_db)):
+    new_course = models.Course(
+       name=course.name, 
+       description=course.description,
+       instructor=course.instructor
+    )
+    db.add(new_course)
+    db.commit()
+    db.refresh(new_course)
+    return {"Course": new_course}
+
+#get data 
+#get data 
+@app.get('/sqlalchemy/courses')
+def get_courses(db:Session = Depends(get_db)):
+    courses = db.query(models.Course).all()
+    return {"courses": courses}
+
+#get single data 
+@app.get('/sqlalchemy/courses/{course_id}')
+def get_course(course_id:int, db:Session = Depends(get_db)):
+    course = db.query(models.Course).filter(models.Course.id == course_id).first()
+
+    if not course:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, 
+            detail=f"Course id : {course_id} not found")
+    return {"course": course}
+
+#update single course
+#update single course
+@app.put('/sqlalchemy/courses/{course_id}')
+def update_course(course_id:int, course:SQLCourse, db:Session = Depends(get_db)):
+    existing_course = db.query(models.Course).filter(models.Course.id == course_id).first()
+    if not existing_course:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, 
+            detail=f"Course id : {course_id} not found")
+
+    existing_course.name = course.name
+    existing_course.description = course.description
+    existing_course.instructor = course.instructor
+    db.commit()
+    db.refresh(existing_course)
+    return {"message": "Course updated successfully", "course": existing_course}
+
+#delete single course
+#delete single course
+@app.delete('/sqlalchemy/courses/{course_id}')
+def delete_course(course_id:int, db:Session = Depends(get_db)):
+    existing_course = db.query(models.Course).filter(models.Course.id == course_id).first()
+    if not existing_course:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND, 
+                detail=f"Course id : {course_id} not found")
+    
+    db.delete(existing_course)
+    db.commit()
+    return {"message": "Course deleted successfully"}
