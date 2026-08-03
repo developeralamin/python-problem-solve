@@ -23,3 +23,4 @@ A brief description of your project that highlights its purpose and functionalit
     cd repository-name
     ```
 
+Pydantic হলো Python-এর একটি Data Validation এবং Data Serialization Library।
