@@ -6,12 +6,14 @@ from .. database import engine, get_db
 from typing import List, Optional
 from .. import models, schemas
 
-router = APIRouter()
+router = APIRouter(
+    prefix="/sqlalchemy/users"
+)
 
 #user create
 #user create
 
-@router.post('/sqlalchemy/users', status_code=status.HTTP_201_CREATED, response_model=schemas.UserResponse)
+@router.post('/', status_code=status.HTTP_201_CREATED, response_model=schemas.UserResponse)
 def create_user(user:schemas.UserCreate, db:Session = Depends(get_db)):
     new_user = models.User(**user.model_dump())
     exising_user = db.query(models.User).filter(models.User.email == user.email).first()
@@ -26,3 +28,5 @@ def create_user(user:schemas.UserCreate, db:Session = Depends(get_db)):
     db.commit()
     db.refresh(new_user)
     return new_user
+
+

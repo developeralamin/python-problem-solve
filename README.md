@@ -24,3 +24,8 @@ A brief description of your project that highlights its purpose and functionalit
     ```
 
 Pydantic হলো Python-এর একটি Data Validation এবং Data Serialization Library।
+
+
+Uvicorn is a lightning-fast, lightweight Asynchronous Server Gateway Interface (ASGI) 
+web server implementation for Python. It acts as the bridge that allows 
+asynchronous web frameworks like FastAPI and Starlette to handle incoming HTTP and WebSocket requests concurrently

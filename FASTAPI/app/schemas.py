@@ -38,3 +38,9 @@ class UserResponse(UserBase):
         frozen=True
         validate_assignment=True
         anystr_strip_whitespace=True
+
+class UserLogin(UserBase):
+    password: str = Field(
+        min_length=8,
+        max_length=72
+    )
