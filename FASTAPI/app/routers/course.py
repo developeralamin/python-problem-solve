@@ -5,6 +5,7 @@ from sqlalchemy.orm import Session, session
 from .. database import engine, get_db
 from typing import List, Optional
 from .. import models, schemas
+from .. import oauth2
 
 router = APIRouter(
      prefix="/sqlalchemy/courses"
@@ -22,13 +23,13 @@ def create_course(course:schemas.SQLCourseCreate, db:Session = Depends(get_db)):
 #get data 
 #get data 
 @router.get('/', response_model=List[schemas.SQLCourseResponse])
-def get_courses(db:Session = Depends(get_db)):
+def get_courses(db:Session = Depends(get_db), get_current_user:int = Depends(oauth2.get_current_user)):
     courses = db.query(models.Course).all()
     return courses
 
 #get single data 
 @router.get('/{course_id}', response_model=schemas.SQLCourseResponse)
-def get_course(course_id:int, db:Session = Depends(get_db)):
+def get_course(course_id:int, db:Session = Depends(get_db), get_current_user: int = Depends(oauth2.get_current_user)):
     course = db.query(models.Course).filter(models.Course.id == course_id).first()
 
     if not course:
@@ -40,7 +41,7 @@ def get_course(course_id:int, db:Session = Depends(get_db)):
 #update single course
 #update single course
 @router.put('/{course_id}', response_model=schemas.SQLCourseResponse)
-def update_course(course_id:int, course_data:schemas.SQLCourseCreate, db:Session = Depends(get_db)):
+def update_course(course_id:int, course_data:schemas.SQLCourseCreate, db:Session = Depends(get_db), get_current_user: int = Depends(oauth2.get_current_user)):
     course_query = db.query(models.Course).filter(models.Course.id==course_id)
     course = course_query.first()
     if not course:

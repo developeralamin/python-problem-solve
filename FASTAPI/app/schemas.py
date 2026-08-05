@@ -2,6 +2,7 @@
 from datetime import datetime
 
 from pydantic import BaseModel,EmailStr, Field
+from typing import Optional
 
 class SQLCourseCreate(BaseModel):
     name:str
@@ -44,3 +45,12 @@ class UserLogin(UserBase):
         min_length=8,
         max_length=72
     )
+
+#thise schema is used for only validation purpose, not for database
+class Token(BaseModel):
+    access_token: str
+    token_type: str
+
+#response schema for token data
+class TokenData(BaseModel):
+    id : Optional[int] = None
