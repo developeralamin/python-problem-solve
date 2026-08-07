@@ -1,19 +1,14 @@
+
+from . routers import user, course,auth
 from fastapi import FastAPI
+from . import models
+from . database import engine
 
 app = FastAPI()
 
-@app.get("/")
-def root():
-    return {"message": "Hello Alamin"}
+# //create  tables from all metadata of models.py
+models.Base.metadata.create_all(bind=engine)
 
-@app.get("/alamin")
-def read_alamin():
-    return {"message": "Hello Alamin"}
-
-@app.get("/alamin/{name}")
-def read_alamin_name(name: str):
-    return {"message": f"Hello {name}"}
-
-@app.put("/items/{item_id}")
-def update_item(item_id: int, item: Item):
-    return {"item_name": item.name, "item_id": item_id}
+app.include_router(user.router)
+app.include_router(course.router)
+app.include_router(auth.router)

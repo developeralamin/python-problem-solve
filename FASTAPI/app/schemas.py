@@ -1,7 +1,7 @@
 
 from datetime import datetime
 
-from pydantic import BaseModel,EmailStr, Field
+from pydantic import BaseModel,EmailStr, Field, field_validator
 from typing import Optional
 
 class SQLCourseCreate(BaseModel):
@@ -14,6 +14,7 @@ class SQLCourseResponse(SQLCourseCreate):
     name: str
     description: str
     instructor: str
+    user_id: int
    
    #second way inheritance 
     # class Config:
@@ -29,6 +30,13 @@ class UserCreate(UserBase):
         max_length=72
     )
 
+   @field_validator('password')
+   @classmethod
+   def password_must_fit_bcrypt_bytes(cls, value: str) -> str:
+       if len(value.encode('utf-8')) > 72:
+           raise ValueError('Password must not exceed 72 bytes in UTF-8 form')
+       return value
+
 class UserResponse(UserBase):
     id: int
     created_at: datetime
@@ -41,10 +49,7 @@ class UserResponse(UserBase):
         anystr_strip_whitespace=True
 
 class UserLogin(UserBase):
-    password: str = Field(
-        min_length=8,
-        max_length=72
-    )
+    password: str 
 
 #thise schema is used for only validation purpose, not for database
 class Token(BaseModel):

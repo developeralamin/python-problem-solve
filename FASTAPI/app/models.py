@@ -8,6 +8,11 @@ class Course(Base):
     name = Column(String, nullable=False)
     description = Column(String, nullable=True)
     instructor = Column(String, nullable=True)
+    user_id = Column(
+            Integer,
+            ForeignKey("users.id",ondelete="CASCADE"),
+            nullable=False,
+        )
 
 class Lesson(Base):
     __tablename__ = "lessons"

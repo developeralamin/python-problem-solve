@@ -3,7 +3,7 @@ from fastapi import FastAPI,Request,HTTPException, Response,status,Depends,APIRo
 from passlib.context import CryptContext
 from sqlalchemy.orm import Session, session
 from .. database import engine, get_db
-from typing import List, Optional
+from typing import List
 from .. import models, schemas
 from .. import oauth2
 
@@ -13,8 +13,8 @@ router = APIRouter(
 
 #insert data 
 @router.post('/', response_model=schemas.SQLCourseResponse)
-def create_course(course:schemas.SQLCourseCreate, db:Session = Depends(get_db)):
-    new_course = models.Course(**course.model_dump()) #convert pyathn object to dictionary using model_dump() method
+def create_course(course:schemas.SQLCourseCreate, db:Session = Depends(get_db), get_current_user:int = Depends(oauth2.get_current_user)):
+    new_course = models.Course(**course.model_dump(), user_id=get_current_user.id) #convert pyathn object to dictionary using model_dump() method
     db.add(new_course)
     db.commit()
     db.refresh(new_course)
