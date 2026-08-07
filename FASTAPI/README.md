@@ -34,6 +34,11 @@ Authorization: Bearer <access_token>
 - Use the token in the Authorization header for a protected route.
 - If the token is invalid or expired, the API returns a `401 Unauthorized` response.
 
+## Environment-driven configuration
+- The settings schema in [app/config.py](app/config.py) now defines required fields only, so sensitive and connection values are read from the environment file instead of being hard-coded in the class body.
+- The runtime picks the database host, port, username, password, database name, JWT secret, algorithm, and access-token lifetime from the values loaded from [app/.env](app/.env).
+- The JWT creation flow in [app/oauth2.py](app/oauth2.py) uses the configured expiry window from the settings object, rather than a direct `15`-minute fallback inside the function.
+
 ## Notes
 - The secret key and algorithm are defined in [app/oauth2.py](app/oauth2.py).
 - The authentication logic uses `OAuth2PasswordBearer` and SQLAlchemy.
