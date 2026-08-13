@@ -15,6 +15,16 @@ class Settings(BaseSettings):
     algorithm: str
     access_token_expire_minutes: int
 
+    mailtrap_host: str
+    mailtrap_port: int
+    mailtrap_username: str
+    mailtrap_password: str
+
+    mail_from_email: str
+    mail_from_name: str
+
+    # base_url:str
+
     model_config = SettingsConfigDict(
         env_file=str(BASE_DIR / ".env"),
         env_file_encoding="utf-8",
