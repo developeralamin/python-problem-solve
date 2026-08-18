@@ -1,5 +1,6 @@
-from sqlalchemy import Column, Integer, String, Float, TIMESTAMP, text, ForeignKey
+from sqlalchemy import Column, Integer, String, Float, TIMESTAMP, text, ForeignKey,Boolean
 from . database import Base
+
 
 class Course(Base):
     __tablename__ = "posts"
@@ -32,3 +33,5 @@ class User(Base):
     email = Column(String, nullable=False, unique = True)
     password = Column(String, nullable=False)
     created_at = Column(TIMESTAMP(timezone=True), nullable=False, server_default=text('now()'))
+    is_verified = Column(Boolean, nullable=False, default=False)
+    password_verification = Column(String, nullable=False)
