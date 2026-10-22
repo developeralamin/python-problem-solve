@@ -1,0 +1,39 @@
+# Project Name
+
+A brief description of your project that highlights its purpose and functionality.
+
+---
+
+## Features
+
+- **Feature 1**: Brief description
+- **Feature 2**: Brief description
+- **Feature 3**: Brief description
+
+---
+
+## Installation
+
+1. Clone this repository:
+    ```bash
+    git clone https://github.com/developeralamin/python-problem-solve
+    ```
+2. Navigate to the project directory:
+    ```bash
+    cd repository-name
+    ```
+
+Pydantic হলো Python-এর একটি Data Validation এবং Data Serialization Library।
+
+
+Uvicorn is a lightning-fast, lightweight Asynchronous Server Gateway Interface (ASGI) 
+web server implementation for Python. It acts as the bridge that allows 
+asynchronous web frameworks like FastAPI and Starlette to handle incoming HTTP and WebSocket requests concurrently
+
+
+# python -m uvicorn FASTAPI.main:app --reload -- run the project
+
+<!-- #when add the new migration run this  -->
+<!-- alembic revision --autogenerate -m "add password reset fields" -->
+<!-- alembic upgrade head -->
+python -c "import secrets; print(secrets.token_hex(32))"

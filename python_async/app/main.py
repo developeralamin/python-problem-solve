@@ -18,3 +18,8 @@ app = FastAPI(lifespan=lifespan)
 # ৩. রাউটার অন্তর্ভুক্ত করা
 app.include_router(courses.router)
 app.include_router(user.router)
+
+
+
+
+# python -m uvicorn FASTAPI.main:app --reload -- run the project

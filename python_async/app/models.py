@@ -1,4 +1,14 @@
-from sqlalchemy import Column, Integer, String, Float, TIMESTAMP, text, ForeignKey,Boolean
+from sqlalchemy import (
+    Column,
+    Integer,
+    String,
+    Float,
+    TIMESTAMP,
+    text,
+    ForeignKey,
+    Boolean,
+    DateTime,
+)
 from . database import Base
 
 
@@ -35,3 +45,15 @@ class User(Base):
     created_at = Column(TIMESTAMP(timezone=True), nullable=False, server_default=text('now()'))
     is_verified = Column(Boolean, nullable=False, default=False)
     password_verification = Column(String, nullable=False)
+    # Password reset token hash
+    password_reset_token = Column(
+        String,
+        nullable=True,
+        index=True,
+    )
+
+    # Password reset expiration time
+    password_reset_expires = Column(
+        DateTime(timezone=True),
+        nullable=True,
+    )

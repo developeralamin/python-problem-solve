@@ -29,3 +29,11 @@ Pydantic হলো Python-এর একটি Data Validation এবং Data Ser
 Uvicorn is a lightning-fast, lightweight Asynchronous Server Gateway Interface (ASGI) 
 web server implementation for Python. It acts as the bridge that allows 
 asynchronous web frameworks like FastAPI and Starlette to handle incoming HTTP and WebSocket requests concurrently
+
+
+# python -m uvicorn FASTAPI.main:app --reload -- run the project
+
+<!-- #when add the new migration run this  -->
+<!-- alembic revision --autogenerate -m "add password reset fields" -->
+<!-- alembic upgrade head -->
+python -c "import secrets; print(secrets.token_hex(32))"
